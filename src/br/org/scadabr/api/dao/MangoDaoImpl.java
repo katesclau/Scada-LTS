@@ -65,6 +65,10 @@ public class MangoDaoImpl implements ScadaBRAPIDao {
 				if (itemQName == null)
 					itemQName = "";
 				int dataPointId = Common.ctx.getDataPointByName(itemQName);
+				
+				if (dataPointId < 0) // try to get by XID
+					dataPointId = Common.ctx.getDataPointByXID(itemQName);
+				
 				DataPointVO dp = new DataPointDao().getDataPoint(dataPointId);
 				if (dp != null) {
 					if (isValidDataPoint(dp)) {

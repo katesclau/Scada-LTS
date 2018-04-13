@@ -104,6 +104,7 @@ public class MangoContextListener implements ServletContextListener {
 		imageSetInitialize(ctx);
 		databaseInitialize(ctx);
 		dataPointsNameToIdMapping(ctx);
+		dataPointsXidToIdMapping(ctx);
 
 		// Check if the known servlet context path has changed.
 		String knownContextPath = SystemSettingsDAO
@@ -222,6 +223,21 @@ public class MangoContextListener implements ServletContextListener {
 		Common.ctx.getServletContext().setAttribute(
 				Common.ContextKeys.DATA_POINTS_NAME_ID_MAPPING, mapping);
 
+	}
+
+	private void dataPointsXidToIdMapping(ServletContext ctx) {
+		PointHierarchy pH = new DataPointDao().getPointHierarchy();
+		List<DataPointVO> datapoints = new DataPointDao().getDataPoints(null,
+				false);
+
+		Map<String, Integer> mapping = new HashMap<String, Integer>();
+
+		for (DataPointVO dataPointVO : datapoints) {
+			mapping.put(dataPointVO.getXid(), dataPointVO.getId());
+		}
+
+		Common.ctx.getServletContext().setAttribute(
+				Common.ContextKeys.DATA_POINTS_XID_ID_MAPPING, mapping);
 	}
 
 	//

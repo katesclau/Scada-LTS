@@ -133,6 +133,16 @@ public class ContextWrapper {
 			return dataPointId;
 	}
 
+	public int getDataPointByXID(String dataPointQualifiedID) {
+		Map<String, Integer> mapping = (Map<String, Integer>) ctx
+				.getAttribute(Common.ContextKeys.DATA_POINTS_XID_ID_MAPPING);
+		Integer dataPointId = mapping.get(dataPointQualifiedID);
+		if (dataPointId == null)
+			return -1;
+		else
+			return dataPointId;
+	}
+
 	public ServletContext getServletContext() {
 		return ctx;
 	}
@@ -152,4 +162,5 @@ public class ContextWrapper {
 
 		return dm;
 	}
+
 }
