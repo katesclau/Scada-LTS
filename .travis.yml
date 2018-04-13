@@ -1,13 +1,5 @@
 sudo: required
 before_install:
-#- sudo add-apt-repository ppa:openjdk-r/ppa -y
-#- sudo apt-get update
-#- sudo apt-get install -y openjdk-8-jdk
-#- sudo update-alternatives --auto java
-#- sudo update-alternatives --auto javac
-#- export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-#- java -version
-#- javac -version
 - sudo apt-get install tomcat7
 before_script:
 - mysql -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');"
@@ -36,18 +28,19 @@ before_script:
 - cd ../..
 language: java
 jdk:
-- openjdk7
+- openjdk8
 services:
 - docker
 - mysql
-#script: ant war && ant junit
-script: ant war
+script: ant war && ant junit
+#script: ant war
 branches:
   only:
   - "/^PROC-.*$/"
   - "/^develop-sdtabilit.*$/"
   - "/^#179*$/"
   - "/^master-sdtabilit.*$/"
+  - "/^v*$/"
 notifications:
   email: false
 env:
@@ -58,17 +51,17 @@ env:
   - secure: KNfVmgjr2ZNsnvIfuhSkZ/kPrSTjn6WSDxEJt/3ioTCgeEGGvPL7UGonHHozZu3WzpzBVyUr60hXjb1nmb9dk6A3Dg05UPZmuS7NiHEA4Ub2zQKgefSbK0AJEhXSDg+bT16Hqxf1aZDaAEpMXGWTGLdpbKkGAW56UZu6LpOlOvoX9pFoSWAyzh1jKiYQsaKJ3eCncHKug5WqTVidOL/ENR6CAYyVLkgZ0yffwsCyVAnh14vri2lswPhPsPvMzYxtLQGkKkUOYkuPOZvBD7l5mp5Y4QLv86iKTFlOteim7yD+RpZZDFpb+3+OhRuj6jlBYWina33RKqBqjhhsayyYN/tYnPUefZhT+ALs8JfUaDXqMdgd7NQj8i5ZvrB+YsCTUVGrnPVbmEq8A4l/An5ushQpK5CrASiAC0K4dOBVT+U89QHtYWuE3ZOmSb518dlbH084ljypAj3JTQpUgRAAxn21VUMKb6QyIPsSPVEQ+zPQnaxBLhYVqafO7iX1tyvdr0mGhLZjXaaGwQu8Y/RoHdmRYcQAGn6zVFNuxWxTlr2OQ0fJ5l6/qBVyqZvqNirYa5hX8KtDu3dVMo5VOirIsoJTw75qTpGxYjhCNCb/woxtRvfX9xoT7tINWOxi2ucFfObSCsTv+BPeZeJiq7UDuFQYsQtWjNRp/iQNJ+rclpQ=
 after_script:
 # get tomcat7 to ./docker/app
-- wget http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.79/bin/apache-tomcat-7.0.79.tar.gz
+- wget http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.85/bin/apache-tomcat-7.0.85.tar.gz
 - mkdir ./docker/app
-- mv apache-tomcat-7.0.79.tar.gz ./docker/app
-- ls -l ./docker/app/apache-tomcat-7.0.79.tar.gz
+- mv apache-tomcat-7.0.85.tar.gz ./docker/app
+- ls -l ./docker/app/apache-tomcat-7.0.85.tar.gz
 - cd ./docker/app
-- echo `pwd` 
+- echo `pwd`
 - echo `ls -l`
-- tar -zxvf apache-tomcat-7.0.79.tar.gz
+- tar -zxvf apache-tomcat-7.0.85.tar.gz
 - ls -l
-- mv ./apache-tomcat-7.0.79/* ./
-- rm -rf ./apache-tomcat-7.0.79
+- mv ./apache-tomcat-7.0.85/* ./
+- rm -rf ./apache-tomcat-7.0.85
 - cp ../../ScadaBR.war ./webapps
 - cp ../../ScadaLTS-UI/war/ScadaLTS.war ./webapps
 - ls -l ./webapps/ScadaLTS.war
@@ -91,7 +84,4 @@ after_script:
 - docker login -u=$DOCKER_USENAME -p=$DOCKER_PASSWORD
 - docker push dockergb/scadalts-dev 
 
-
 #- echo $TRAVIS_BUILD_DIR
-#- sshpass -e scp ./ScadaBR.war test@149.56.44.225:/home/test/ScadaBR.war
-#- sshpass -e scp ./ScadaLTS-UI/war/ScadaLTS.war test@149.56.44.225:/home/test/ScadaLTS.war

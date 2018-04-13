@@ -133,7 +133,7 @@ public class PointValueService implements MangoPointValues {
 
 				// Create a transaction within which to do the insert.
 				
-				id = savePointValueInTrasaction(pointId, dataType, dvalueFinal, pointValue.getTime(), svalueFinal, source, async);
+				id = savePointValueInTrasaction(pointId, dataType, dvalueFinal, pointValue.getTime(), svalueFinal, source, false);
 				
 			} else
 				// Single sql call, so no transaction required.
@@ -271,8 +271,11 @@ public class PointValueService implements MangoPointValues {
 		if (svalue != null || source != null) {
 			Integer sourceType = null, sourceId = null;
 			if (source != null) {
-				sourceType = source.getSetPointSourceType();
-				sourceId = source.getSetPointSourceId();
+				sourceType 	= source.getSetPointSourceType();
+				sourceId 	= source.getSetPointSourceId();
+			} else {
+				sourceType 	= SetPointSource.Types.UNKNOWN;
+				sourceId	= new Integer(1);
 			}
 
 			String shortString = null;

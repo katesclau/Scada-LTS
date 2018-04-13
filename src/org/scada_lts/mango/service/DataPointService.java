@@ -44,7 +44,7 @@ import org.scada_lts.service.PointHierarchyService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.dao.DuplicateKeyException;
 import com.serotonin.db.IntValuePair;
 import com.serotonin.mango.Common;
 import com.serotonin.mango.db.dao.PointValueDao;
@@ -356,16 +356,18 @@ public class DataPointService implements MangoDataPoint {
 	private void saveEventDetectors(DataPointVO dataPoint) {
 		List<PointEventDetectorVO> detectors = getEventDetectors(dataPoint);
 
-		for (PointEventDetectorVO pointEventDetector: dataPoint.getEventDetectors()) {
-			if (pointEventDetector.getId() < 0) {
-				pointEventDetectorDAO.insert(pointEventDetector);
-			} else {
-				pointEventDetectorDAO.update(pointEventDetector);
+		for (PointEventDetectorVO pointEventDetector: detectors) {
+			if(!dataPoint.getEventDetectors().contains(pointEventDetector)) {
+				pointEventDetectorDAO.delete(dataPoint.getId(), pointEventDetector.getId());
 			}
 		}
-
-		for (PointEventDetectorVO pointEventDetector: detectors) {
-			pointEventDetectorDAO.delete(dataPoint.getId(), pointEventDetector.getId());
+		
+		for (PointEventDetectorVO pointEventDetector: dataPoint.getEventDetectors()) {
+			try {
+			    pointEventDetectorDAO.insert(pointEventDetector);
+			} catch (DuplicateKeyException e) {
+				pointEventDetectorDAO.update(pointEventDetector);
+			}
 		}
 	}
 

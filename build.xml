@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- WARNING: Eclipse auto-generated file.
-              Any modifications will be overwritten.
-              To include a user specific buildfile here, simply create one in the same
-              directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. -->
+
 <project basedir="." default="build" name="scadabr-1.1.0-RC">
 	<property environment="env"/>
 	<property name="debuglevel" value="source,lines,vars"/>
-	<property name="target" value="1.7"/>
-	<property name="source" value="1.7"/>
+	<property name="target" value="1.8"/>
+	<property name="source" value="1.8"/>
+
+   <path id="tomcat.ant.classpath">
+	   <pathelement location="${env.CATALINA_HOME}/lib/catalina-ant.jar"/>
+   </path>
+
+
+	<target name="clearAndCopyToDeploy" >
+		<delete file="${env.CATALINA_HOME}/webapps/ScadaBR.war"></delete>
+		<delete dir="${env.CATALINA_HOME}/webapps/ScadaBR"></delete>
+		<copy file="ScadaBR.war" todir="${env.CATALINA_HOME}/webapps" overwrite="true">
+		</copy>
+	</target>
+
+	<!-- to option copy file to webapps :) -->
+
+
     <path id="Web App Libraries.libraryclasspath">
         <pathelement location="WebContent/WEB-INF/lib/OneWireAPI.jar"/>
         <pathelement location="WebContent/WEB-INF/lib/RXTXcomm.jar"/>
@@ -115,6 +127,7 @@
         <pathelement location="WebContent/WEB-INF/lib/xmlsec-1.4.3.jar"/>
     	<pathelement location="WebContent/WEB-INF/lib/junit-4.8.2.jar"/>
   		<pathelement location="WebContent/WEB-INF/lib/mockito-all-1.9.5.jar"/>
+    	<pathelement location="WebContent/WEB-INF/lib/mockito-core-2.11.0.jar"/>
         <pathelement location="WebContent/WEB-INF/classes"/>
     </path>
 	<path id="EAR Libraries.libraryclasspath"/>
@@ -140,10 +153,23 @@
 		<pathelement location="${env.CATALINA_HOME}/lib/tomcat-jdbc.jar"/>
 		<pathelement location="${env.CATALINA_HOME}/lib/tomcat-util.jar"/>
 	</path>
+	<path id="httpcomponents-client-4.5.3">
+		<pathelement location="WebContent/WEB-INF/lib/commons-codec-1.9.jar"/>
+		<pathelement location="WebContent/WEB-INF/lib/commons-logging-1.2.jar"/>
+		<pathelement location="WebContent/WEB-INF/lib/fluent-hc-4.5.3.jar"/>
+		<pathelement location="WebContent/WEB-INF/lib/httpclient-4.5.3.jar"/>
+		<pathelement location="WebContent/WEB-INF/lib/httpclient-cache-4.5.3.jar"/>
+		<pathelement location="WebContent/WEB-INF/lib/httpclient-win-4.5.3.jar"/>
+		<pathelement location="WebContent/WEB-INF/lib/httpcore-4.4.6.jar"/>
+		<pathelement location="WebContent/WEB-INF/lib/httpmime-4.5.3.jar"/>
+		<pathelement location="WebContent/WEB-INF/lib/jna-4.1.0.jar"/>
+		<pathelement location="WebContent/WEB-INF/lib/jna-platform-4.1.0.jar"/>
+	</path>
 	<path id="scadabr-1.1.0-RC.classpath">
 		<pathelement location="build/classes"/>
 		<path refid="Web App Libraries.libraryclasspath"/>
 		<path refid="EAR Libraries.libraryclasspath"/>
+		<path refid="httpcomponents-client-4.5.3"/>
 		<pathelement location="WebContent/WEB-INF/lib/wsdl4j-1.5.1.jar"/>
 		<pathelement location="WebContent/WEB-INF/lib/wss4j-1.5.8.jar"/>
 		<pathelement location="WebContent/WEB-INF/lib/xmlsec-1.4.3.jar"/>
@@ -211,7 +237,7 @@
 	</target>
 	
 	<target name="junit">
-
+		
 		    <junit printsummary="yes" haltonfailure="no">
 		    
 		    <formatter type="plain" usefile="false" />
@@ -220,6 +246,7 @@
 		        
 		    </classpath>
 			
+		    <!--
 			<test name="br.org.scadabr.api.AckEventsTest" 
 				haltonfailure="no">
 			</test>
@@ -231,11 +258,12 @@
 		    <test name="br.org.scadabr.api.ActiveEventsTest" 
 		        haltonfailure="no">
 		    </test>
-		    	
+		    -->
+		    <!--
 		    <test name="org.scada_lts.dao.ViewHierarchyDaoTest"
 		    	haltonfailure="no">
 		    </test>
-		    	
+		    
 		    <test name="org.scada_lts.service.ViewHierarchyServiceTest"
 		        haltonfailure="yes">
 		    </test>
@@ -243,13 +271,22 @@
 		    <test name="org.scada_lts.service.ViewHierarchyServiceTestOnDB"
 		    	haltonfailure="yes">
 		    </test>
-		    	
+		    -->
+		    <!--	
 		    <test name="org.scada_lts.service.ViewHierarchyServiceMoveFolderTest"
 		        haltonfailure="yes">
 		    </test>
 		    	
 		    <test name="org.scada_lts.service.ViewHierarchyServiceMoveViewTest"
 		        haltonfailure="yes">
+		    </test>
+		    -->
+		    <test name="org.scada_lts.cached.DataPointsCacheComposeDataSourcesDataTest"
+		    	haltonfailure="yes">
+		    </test>	
+		    	
+		    <test name="org.scada_lts.cached.DataSourcePointsCacheMockitoTest"
+		    	haltonfailure="yes">
 		    </test>
 		    	
 		    <!--

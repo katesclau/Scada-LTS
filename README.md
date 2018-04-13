@@ -4,6 +4,7 @@
 [![GPL-2.0](https://img.shields.io/npm/l/gb-json.svg?style=flat-square)](https://github.com/sdtabilit/Scada-LTS/blob/master-sdtabilit/LICENSE)
 [![](https://images.microbadger.com/badges/version/dockergb/scadalts-dev.svg)](https://microbadger.com/images/dockergb/scadalts-dev "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/dockergb/scadalts-dev.svg)](https://microbadger.com/images/dockergb/scadalts-dev "Get your own image badge on microbadger.com")
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/SCADA-LTS/User-Management.svg?columns=all)](https://waffle.io/SCADA-LTS/User-Management)
 
 Scada-LTS is an Open Source, web-based, multi-platform solution for building your own SCADA (Supervisory Control and Data Acquisiton) system.
 
@@ -32,7 +33,7 @@ Here is two of the several start options:
 * In the Docker CLI type in: `docker pull dockergb/scadalts-dev` to download repository.
 * Type in: `docker images` to check if repository is created. It should show "dockergb/scadalts" on the list.
 * To run Scada on Docker type in: 
-`docker run -it -p 81:8080 dockergb/scadalts-dev /root/start.sh`.
+``docker run -it -e DOCKER_HOST_IP=`docker-machine ip` -p 81:8080 dockergb/scadalts-dev /root/start.sh``.
 * Type in: `Get-NetIPAddress` and find IPAdrress for "DockerNAT" InterfaceAlias (You need a new CLI window to do it).
 * Type in docker IP adrress in the browser with port 81 and `/ScadaLTS/` sufix. Example:
 `http://10.0.75.2:81/ScadaLTS/`
@@ -43,7 +44,8 @@ Here is two of the several start options:
 * Install mysql: `apt-get install mysql-server`.
 * Login to mysql: `mysql -u [user] -p`.
 * Create db:`create dababase scadalts;`.
-* Copy ScadaBR.war to dir tomacat webapps: `cp ScadaBR.war /var/lib/tomcat7/webapps/`.
+* Copy ScadaBR.war & ScadaLTS.war to dir tomacat webapps: `cp ScadaBR.war /var/lib/tomcat7/webapps/`.
+* Restart tomcat7 to generate ScadaLTS folder: `/etc/init.d/tomcat7 restart`
 * Change config file env.properties set connection to db: `vim /var/lib/tomcat7/webapps/ScadaBR/WEB-INF/classes/env.properties`.
 * Restart tomcat7: `/etc/init.d/tomcat7 restart`
 
@@ -70,6 +72,10 @@ In the process of making.
 
 * ScadaLTS tag is finally available on Stack Overflow. Feel free to ask questions - http://stackoverflow.com/questions/tagged/scadalts.
 
+## Tests
+
+[scada-lts.testquality.com](https://scada-lts.testquality.com)
+
 
 ## Versioning
 
@@ -85,13 +91,17 @@ Code base on [ScadaBR](https://sourceforge.net/projects/scadabr/?source=director
 
 * <https://github.com/grzesiekb>
 
-**Konrad Daniek**
-
-* <https://github.com/wisyr>
-
 **Arkadiusz Parafiniuk**
 
 * <https://github.com/ArkadiuszParafiniuk>
+
+**Rafał Kotyla**
+
+* <https://github.com/RandemRafaeL> UI/UX
+
+**Konrad Daniek**
+
+* <https://github.com/wisyr>
 
 **Jarosław Morzyniec**
 
